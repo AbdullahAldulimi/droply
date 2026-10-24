@@ -1,1 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#080b10">
+<title>Droply — Big Deliveries Made Simple</title>
 
+<style>
+:root {
+  --bg:#080b10;
+  --card:#141a22;
+  --card2:#1c2430;
+  --blue:#1687ff;
+  --text:#ffffff;
+  --muted:#929dab;
+  --border:#26303c;
+}
+
+* {
+  box-sizing:border-box;
+}
+
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+button,input,select {
+  font:inherit;
+}
+
+button {
+  cursor:pointer;
+}
+
+.app {
+  max-width:600px;
+  margin:auto;
+  min-height:100dvh;
+  padding:25px 20px 110px;
+}
+
+header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:32px;
+}
+
+.logo {
+  font-size:27px;
+  font-weight:800;
+  letter-spacing:-1px;
+}
+
+.logo span {
+  color:var(--blue);
+}
+
+.avatar {
+  background:var(--card2);
+  width:43px;
+  height:43px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  font-size:20px;
+}
+
+h1 {
+  font-size:35px;
+  line-height:1.12;
+  letter-spacing:-1.4px;
+  margin:10px 0;
+}
+
+h2 {
+  font-size:23px;
+  letter-spacing:-.5px;
+}
+
+h3 {
+  font-size:17px;
+}
+
+p {
+  color:var(--muted);
+  line-height:1.6;
+}
+
+.blue {
+  color:var(--blue);
+}
+
+.small {
+  font-size:13px;
+}
+
+.hero {
+  padding:20px 0 30px;
+}
+
+.badge {
+  display:inline-block;
+  padding:8px 12px;
+  border:1px solid var(--border);
+  border-radius:30px;
+  font-size:11px;
+  letter-spacing:1.5px;
+  color:#b6c1cf;
+}
+
+.hero p {
+  margin-bottom:27px;
+}
+
+.btn {
+  border:0;
+  width:100%;
+  padding:17px;
+  border-radius:15px;
+  background:var(--blue);
+  color:white;
+  font-weight:700;
+  margin:6px 0;
+  transition:.2s;
+}
+
+.btn:active {
+  transform:scale(.97);
+}
+
+.btn.secondary {
+  background:var(--card);
+  border:1px solid var(--border);
+}
+
+.section {
+  margin-top:30px;
+}
+
+.grid {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+
+.card {
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:18px;
+}
+
+.service {
+  text-align:center;
+  padding:25px 10px;
+  cursor:pointer;
+}
+
+.service .icon {
+  font-size:30px;
+  margin-bottom:12px;
+}
+
+.service strong {
+  display:block;
+  font-size:13px;
+}
+
+label {
+  display:block;
+  margin:19px 0 8px;
+  font-size:13px;
+  color:#c8d0dc;
+  font-weight:600;
+}
+
+input,select {
+  width:100%;
+  padding:16px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:13px;
+  color:white;
+  outline:none;
+}
+
+input:focus,select:focus {
+  border-color:var(--blue);
+}
+
+.vehicle {
+  padding:17px;
+  margin:10px 0;
+  display:flex;
+  align-items:center;
+  gap:15px;
+  cursor:pointer;
+}
+
+.vehicle.selected {
+  border-color:var(--blue);
+  background:#102239;
+}
+
+.vehicle-icon {
+  font-size:30px;
+}
+
+.vehicle-info {
+  flex:1;
+}
+
+.vehicle-info strong {
+  display:block;
+}
+
+.vehicle-info small {
+  color:var(--muted);
+}
+
+.radio {
+  width:19px;
+  height:19px;
+  border:2px solid #667382;
+  border-radius:50%;
+}
+
+.selected .radio {
+  border:6px solid var(--blue);
+}
+
+.price-box {
+  background:linear-gradient(135deg,#10243b,#101820);
+  border:1px solid #214a73;
+  padding:23px;
+  border-radius:18px;
+  margin-top:25px;
+}
+
+.price {
+  font-size:37px;
+  font-weight:800;
+  margin:8px 0;
+}
+
+.nav {
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:#10151c;
+  border-top:1px solid var(--border);
+  display:flex;
+  justify-content:space-around;
+  padding:13px 5px calc(13px + env(safe-area-inset-bottom));
+  z-index:20;
+}
+
+.nav-item {
+  border:0;
+  background:none;
+  color:#8793a3;
+  font-size:11px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  min-width:60px;
+}
+
+.nav-item span {
+  font-size:22px;
+}
+
+.nav-item.active {
+  color:var(--blue);
+}
+
+.page {
+  display:none;
+  animation:fade .25s ease;
+}
+
+.page.active {
+  display:block;
+}
+
+@keyframes fade {
+  from {
+    opacity:0;
+    transform:translateY(8px);
+  }
+  to {
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+.booking {
+  margin:13px 0;
+}
+
+.status {
+  display:inline-block;
+  background:#103a2b;
+  color:#4adea1;
+  border-radius:20px;
+  padding:6px 11px;
+  font-size:12px;
+}
+
+.progress {
+  display:flex;
+  justify-content:space-between;
+  margin:25px 0;
+  position:relative;
+}
+
+.step {
+  text-align:center;
+  flex:1;
+  color:var(--muted);
+  font-size:11px;
+}
+
+.dot {
+  width:18px;
+  height:18px;
+  background:#34404d;
+  border-radius:50%;
+  margin:0 auto 10px;
+}
+
+.step.done .dot {
+  background:var(--blue);
+}
+
+.step.done {
+  color:white;
+}
+
+.empty {
+  text-align:center;
+  padding:50px 15px;
+}
+
+.empty .icon {
+  font-size:50px;
+}
+
+.profile-row {
+  padding:18px 0;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  justify-content:space-between;
+}
+
+.driver-job {
+  margin-bottom:15px;
+}
+
+.hidden {
+  display:none!important;
+}
+
+@media(min-width:700px) {
+  .app {
+    border-left:1px solid var(--border);
+    border-right:1px solid var(--border);
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header>
+  <div class="logo"><span>◈</span> Droply</div>
+  <div class="avatar" onclick="showPage('profile')">👤</div>
+</header>
+
+<!-- HOME -->
+
+<section id="home" class="page active">
+
+  <div class="hero">
+    <div class="badge">BIG DELIVERIES. MADE SIMPLE.</div>
+
+    <h1>
+      Need something<br>
+      <span class="blue">delivered?</span>
+    </h1>
+
+    <p>
+      Book a truck for pallets, freight,
+      furniture and more. Fast, simple
+      and reliable.
+    </p>
+
+    <button class="btn" onclick="showPage('book')">
+      📦 Book a Delivery →
+    </button>
+
+    <button class="btn secondary" onclick="showPage('driver')">
+      🚛 Become a Driver →
+    </button>
+  </div>
+
+  <div class="section">
+    <h3>Popular Deliveries</h3>
+
+    <div class="grid">
+      <div class="card service" onclick="chooseType('Pallets')">
+        <div class="icon">📦</div>
+        <strong>Pallets</strong>
+      </div>
+
+      <div class="card service" onclick="chooseType('Furniture')">
+        <div class="icon">🛋️</div>
+        <strong>Furniture</strong>
+      </div>
+
+      <div class="card service" onclick="chooseType('Machinery')">
+        <div class="icon">🏗️</div>
+        <strong>Machinery</strong>
+      </div>
+
+      <div class="card service" onclick="chooseType('Other')">
+        <div class="icon">🚚</div>
+        <strong>Other</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Why Droply?</h3>
+
+    <div class="grid">
+      <div class="card">
+        <h2>⚡</h2>
+        <strong>Fast Booking</strong>
+        <p class="small">Request a truck in minutes.</p>
+      </div>
+
+      <div class="card">
+        <h2>📍</h2>
+        <strong>Easy Tracking</strong>
+        <p class="small">Follow your delivery progress.</p>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- BOOK DELIVERY -->
+
+<section id="book" class="page">
+
+<h2>Book a Delivery</h2>
+<p>Tell us what you need transported.</p>
+
+<label>Pickup Location</label>
+<input id="pickup" placeholder="Enter pickup address">
+
+<label>Drop-off Location</label>
+<input id="dropoff" placeholder="Enter delivery address">
+
+<label>What are you delivering?</label>
+
+<select id="type">
+  <option>Pallets</option>
+  <option>Furniture</option>
+  <option>Machinery</option>
+  <option>Other</option>
+</select>
+
+<label>Estimated Distance (km)</label>
+<input id="distance" type="number" min="1" max="2000" placeholder="Example: 25" oninput="calculatePrice()">
+
+<div class="section">
+<h3>Select Vehicle Size</h3>
+
+<div class="card vehicle selected" id="ute" onclick="selectVehicle('ute')">
+  <div class="vehicle-icon">🛻</div>
+  <div class="vehicle-info">
+    <strong>Ute / Small Truck</strong>
+    <small>Small loads — up to 1 pallet</small>
+  </div>
+  <div class="radio"></div>
+</div>
+
+<div class="card vehicle" id="medium" onclick="selectVehicle('medium')">
+  <div class="vehicle-icon">🚚</div>
+  <div class="vehicle-info">
+    <strong>Medium Truck</strong>
+    <small>Medium loads — up to 8 pallets</small>
+  </div>
+  <div class="radio"></div>
+</div>
+
+<div class="card vehicle" id="large" onclick="selectVehicle('large')">
+  <div class="vehicle-icon">🚛</div>
+  <div class="vehicle-info">
+    <strong>Large Truck</strong>
+    <small>Large and heavy loads</small>
+  </div>
+  <div class="radio"></div>
+</div>
+</div>
+
+<label>When do you need it?</label>
+
+<select id="timing">
+  <option>ASAP</option>
+  <option>Today</option>
+  <option>Tomorrow</option>
+  <option>Schedule Later</option>
+</select>
+
+<div class="price-box">
+  <div class="small">Estimated Delivery Price</div>
+  <div class="price" id="price">$0.00</div>
+  <p class="small">
+    Demo estimate only. Actual pricing may vary.
+  </p>
+</div>
+
+<button class="btn" onclick="createBooking()">
+  Request Delivery →
+</button>
+
+</section>
+
+<!-- BOOKINGS -->
+
+<section id="bookings" class="page">
+
+<h2>My Deliveries</h2>
+<p>View and track your delivery requests.</p>
+
+<div id="bookingList"></div>
+
+</section>
+
+<!-- TRACKING -->
+
+<section id="tracking" class="page">
+
+<h2>Track Delivery</h2>
+<p>Your delivery progress.</p>
+
+<div id="trackingContent"></div>
+
+</section>
+
+<!-- DRIVER -->
+
+<section id="driver" class="page">
+
+<h2>Drive with Droply</h2>
+<p>Find delivery opportunities in your area.</p>
+
+<div class="card">
+  <h3>🚛 Driver Dashboard</h3>
+  <p>
+    This is a demonstration of how
+    drivers could receive delivery jobs.
+  </p>
+</div>
+
+<div class="section">
+  <h3>Available Jobs</h3>
+  <div id="driverJobs"></div>
+</div>
+
+</section>
+
+<!-- PROFILE -->
+
+<section id="profile" class="page">
+
+<h2>My Profile</h2>
+<p>Welcome to Droply.</p>
+
+<div class="card">
+  <h3>👤 Guest Account</h3>
+  <p class="small">Prototype mode</p>
+</div>
+
+<div class="section">
+
+  <div class="profile-row">
+    <span>My Deliveries</span>
+    <span onclick="showPage('bookings')">→</span>
+  </div>
+
+  <div class="profile-row">
+    <span>Driver Dashboard</span>
+    <span onclick="showPage('driver')">→</span>
+  </div>
+
+  <div class="profile-row">
+    <span>App Version</span>
+    <span>1.0.0</span>
+  </div>
+
+</div>
+
+<div class="section">
+  <button class="btn secondary" onclick="resetDemo()">
+    Reset Demo Data
+  </button>
+</div>
+
+</section>
+
+</div>
+
+<!-- NAVIGATION -->
+
+<nav class="nav">
+
+<button class="nav-item active" data-page="home" onclick="showPage('home')">
+  <span>⌂</span>
+  Home
+</button>
+
+<button class="nav-item" data-page="bookings" onclick="showPage('bookings')">
+  <span>▣</span>
+  Bookings
+</button>
+
+<button class="nav-item" data-page="book" onclick="showPage('book')">
+  <span>＋</span>
+  Book
+</button>
+
+<button class="nav-item" data-page="driver" onclick="showPage('driver')">
+  <span>🚛</span>
+  Driver
+</button>
+
+<button class="nav-item" data-page="profile" onclick="showPage('profile')">
+  <span>♙</span>
+  Profile
+</button>
+
+</nav>
+
+<script>
+
+let selectedVehicle="ute";
+let selectedBooking=null;
+
+const rates={
+  ute:{base:35,km:2},
+  medium:{base:65,km:3.5},
+  large:{base:110,km:5}
+};
+
+let bookings=[];
+
+try {
+  bookings=JSON.parse(localStorage.getItem("droplyBookings"))||[];
+  if(!Array.isArray(bookings)) bookings=[];
+} catch(e) {
+  bookings=[];
+}
+
+function saveBookings(){
+  localStorage.setItem("droplyBookings",JSON.stringify(bookings));
+}
+
+function showPage(page){
+
+  document.querySelectorAll(".page").forEach(el=>{
+    el.classList.remove("active");
+  });
+
+  document.getElementById(page).classList.add("active");
+
+  document.querySelectorAll(".nav-item").forEach(el=>{
+    el.classList.toggle("active",el.dataset.page===page);
+  });
+
+  if(page==="bookings") renderBookings();
+  if(page==="driver") renderDriverJobs();
+  if(page==="tracking") renderTracking();
+
+  window.scrollTo(0,0);
+}
+
+function chooseType(type){
+  document.getElementById("type").value=type;
+  showPage("book");
+}
+
+function selectVehicle(vehicle){
+
+  selectedVehicle=vehicle;
+
+  document.querySelectorAll(".vehicle").forEach(el=>{
+    el.classList.remove("selected");
+  });
+
+  document.getElementById(vehicle).classList.add("selected");
+
+  calculatePrice();
+}
+
+function calculatePrice(){
+
+  const distance=Number(document.getElementById("distance").value);
+
+  if(!Number.isFinite(distance)||distance<=0){
+    document.getElementById("price").textContent="$0.00";
+    return 0;
+  }
+
+  const rate=rates[selectedVehicle];
+
+  const total=rate.base+(distance*rate.km);
+
+  document.getElementById("price").textContent=
+    "$"+total.toFixed(2);
+
+  return total;
+}
+
+function createBooking(){
+
+  const pickup=document.getElementById("pickup").value.trim();
+  const dropoff=document.getElementById("dropoff").value.trim();
+  const distance=Number(document.getElementById("distance").value);
+  const type=document.getElementById("type").value;
+  const timing=document.getElementById("timing").value;
+
+  if(!pickup||!dropoff){
+    alert("Please enter pickup and drop-off locations.");
+    return;
+  }
+
+  if(!Number.isFinite(distance)||distance<=0||distance>2000){
+    alert("Please enter a valid distance between 1 and 2000 km.");
+    return;
+  }
+
+  const price=calculatePrice();
+
+  const booking={
+    id:"DRP-"+Date.now(),
+    pickup,
+    dropoff,
+    distance,
+    type,
+    timing,
+    vehicle:selectedVehicle,
+    price,
+    status:"Requested",
+    progress:0,
+    created:new Date().toLocaleString()
+  };
+
+  bookings.unshift(booking);
+
+  saveBookings();
+
+  selectedBooking=booking.id;
+
+  alert("Demo delivery request created!");
+
+  showPage("bookings");
+}
+
+function renderBookings(){
+
+  const container=document.getElementById("bookingList");
+
+  if(bookings.length===0){
+    container.innerHTML=`
+      <div class="empty">
+        <div class="icon">📦</div>
+        <h3>No deliveries yet</h3>
+        <p>Book your first delivery with Droply.</p>
+        <button class="btn" onclick="showPage('book')">
+          Book a Delivery
+        </button>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML=bookings.map((b,i)=>`
+    <div class="card booking">
+      <span class="status">${escapeHTML(b.status)}</span>
+      <h3>${escapeHTML(b.type)} Delivery</h3>
+      <p class="small">
+        📍 ${escapeHTML(b.pickup)}<br>
+        ↓<br>
+        📍 ${escapeHTML(b.dropoff)}
+      </p>
+      <strong>$${Number(b.price).toFixed(2)}</strong>
+      <p class="small">${escapeHTML(b.created)}</p>
+      <button class="btn secondary" onclick="trackBooking(${i})">
+        Track Delivery →
+      </button>
+    </div>
+  `).join("");
+}
+
+function trackBooking(index){
+  selectedBooking=bookings[index].id;
+  showPage("tracking");
+}
+
+function getSelectedBooking(){
+  return bookings.find(b=>b.id===selectedBooking)||bookings[0];
+}
+
+function renderTracking(){
+
+  const container=document.getElementById("trackingContent");
+  const b=getSelectedBooking();
+
+  if(!b){
+    container.innerHTML=`
+      <div class="empty">
+        <h3>No active delivery</h3>
+        <p>Create a booking to try tracking.</p>
+        <button class="btn" onclick="showPage('book')">
+          Book Now
+        </button>
+      </div>
+    `;
+    return;
+  }
+
+  const steps=[
+    "Requested",
+    "Driver Assigned",
+    "Picked Up",
+    "Delivered"
+  ];
+
+  container.innerHTML=`
+    <div class="card">
+      <span class="status">${escapeHTML(b.status)}</span>
+
+      <h3>${escapeHTML(b.type)} Delivery</h3>
+
+      <p class="small">
+        ${escapeHTML(b.pickup)}<br>
+        ↓<br>
+        ${escapeHTML(b.dropoff)}
+      </p>
+
+      <div class="progress">
+        ${steps.map((step,i)=>`
+          <div class="step ${i<=b.progress?"done":""}">
+            <div class="dot"></div>
+            ${step}
+          </div>
+        `).join("")}
+      </div>
+
+      <h2>$${Number(b.price).toFixed(2)}</h2>
+      <p class="small">Estimated demo price</p>
+    </div>
+
+    <div class="section">
+      <div class="card">
+        <h3>📍 Delivery Updates</h3>
+        <p>
+          This prototype uses simulated tracking.
+          No real driver or GPS is connected.
+        </p>
+
+        ${b.progress<3?`
+          <button class="btn" onclick="advanceDelivery()">
+            Simulate Next Step →
+          </button>
+        `:`
+          <p class="blue">✓ Delivery completed</p>
+        `}
+      </div>
+    </div>
+  `;
+}
+
+function advanceDelivery(){
+
+  const b=getSelectedBooking();
+
+  if(!b||b.progress>=3)return;
+
+  b.progress++;
+
+  const statuses=[
+    "Requested",
+    "Driver Assigned",
+    "Picked Up",
+    "Delivered"
+  ];
+
+  b.status=statuses[b.progress];
+
+  saveBookings();
+  renderTracking();
+}
+
+function renderDriverJobs(){
+
+  const container=document.getElementById("driverJobs");
+
+  const available=bookings.filter(b=>b.progress===0);
+
+  if(!available.length){
+    container.innerHTML=`
+      <div class="card">
+        <p>No demo delivery requests available.</p>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML=available.map(b=>`
+    <div class="card driver-job">
+      <h3>${escapeHTML(b.type)} Delivery</h3>
+
+      <p class="small">
+        ${escapeHTML(b.pickup)}<br>
+        ↓<br>
+        ${escapeHTML(b.dropoff)}
+      </p>
+
+      <p>${escapeHTML(String(b.distance))} km</p>
+
+      <strong>$${Number(b.price).toFixed(2)}</strong>
+
+      <button class="btn" onclick="acceptJob('${b.id}')">
+        Accept Demo Job
+      </button>
+    </div>
+  `).join("");
+}
+
+function acceptJob(id){
+
+  const b=bookings.find(item=>item.id===id);
+
+  if(!b)return;
+
+  b.progress=1;
+  b.status="Driver Assigned";
+
+  saveBookings();
+
+  selectedBooking=id;
+
+  alert("Demo job accepted!");
+
+  showPage("tracking");
+}
+
+function resetDemo(){
+
+  if(!confirm("Delete all saved demo bookings?"))return;
+
+  bookings=[];
+  selectedBooking=null;
+
+  saveBookings();
+
+  showPage("home");
+}
+
+function escapeHTML(value){
+  return String(value).replace(/[&<>"']/g,function(c){
+    return {
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#39;"
+    }[c];
+  });
+}
+
+calculatePrice();
+
+</script>
+
+</body>
+</html>
